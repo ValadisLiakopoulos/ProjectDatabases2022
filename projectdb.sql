@@ -968,8 +968,54 @@ INSERT INTO trip VALUES
 
 
 
+/* INSERTIONS IN EVENT */
+
+INSERT INTO event VALUES
+('1','1/5/2022','1/20/2022','semper est quam'),
+('2','2/7/2022','2/24/2022','sagittis dui'),
+('3','7/25/2022','8/26/2022','proin eu mi nulla'),
+('4','2/4/2022','2/14/2022','cursus urna ut tellus'),
+('5','4/17/2022','5/15/2022','hendrerit at vulputate'),
+('6','9/16/2022','10/27/2022','nulla facilisi cras'),
+('7','11/23/2022','12/10/2022','sed accumsan felis'),
+('8','10/7/2022','11/16/2022','bibendum imperdiet'),
+('9','12/20/2022','12/25/2022','ut suscipit a feugiat'),
+('10','4/29/2022','5/20/2022','nec molestie sed'),
+('11','6/7/2022','7/15/2022','turpis donec'),
+('12','8/15/2022','9/14/2022','sed interdum'),
+('13','2/17/2022','3/14/2022','libero quis'),
+('14','3/15/2022','4/7/2022','sagittis nam congue risus'),
+('15','1/20/2022','2/14/2022','bibendum felis'),
+('16','11/16/2022','12/23/2022','pellentesque ultrices mattis odio'),
+('17','12/12/2022','12/17/2022','egestas metus aenean'),
+('18','7/22/2022','8/8/2022','augue aliquam erat volutpat'),
+('19','10/21/2022','12/25/2022','rutrum nulla nunc'),
+('20','11/6/2022','12/16/2022','dui vel');
 
 
 
 
+/* INSERTIONS IN RESERVATION */
 
+
+INSERT INTO reservation VALUES
+('1','2854','KOSTAS','PAPAFILIPPOY','MINOR'),
+('2','5652','GIANNIS','THEODOSIOU','ADULT'),
+('3','5455','ALEXIA','KARAKOSTA'r,'MINOR'),
+('4','4452','MARIA','PAPADOPOULOY','ADULT'),
+('5','2000','SOFIA','STERGIOY','ADULT'),
+('6','3542','IOANNA','ALEXIOY','MINOR'),
+('7','5542','NIKOLAS','AVRAMAKOS','MINOR'),
+('8','6604','MARIOS','PANAGIOTIDIS','ADULT'),
+('9','9854','ALEXANDROS','AGALANIOTIS','ADULT'),
+('10','2355','THEOFILOS','DIAMANTIS','MINOR'),
+('11','8445','FANIS','PAPASTERGIANOPOYLOS','ADULT'),
+('12','2545','FOTIS','PALOYKHS','MINOR'),
+('13','3307','EIRHNH','AYGERH','MINOR'),
+('14','5948','KONSTANTINA','KONSTANTINIDIS','ADULT'),
+('15','3925','APOSTOLOS','VELLIDIS','ADULT'),
+('16','5887','GIORGOS','VERMIDIS','MINOR'),
+('17','8405','SPYROS','VAVOULIS','ADULT'),
+('18','1615','SPILIOS','APOSTOLAKIS','MINOR'),
+('19','4723','PANOREA','VAKALIDI','ADULT'),
+('20','5709','IAKOBOS','ANAGNOSTOS','ADULT');
