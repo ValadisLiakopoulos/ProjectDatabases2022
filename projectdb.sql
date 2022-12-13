@@ -1019,3 +1019,33 @@ INSERT INTO reservation VALUES
 ('18','1615','SPILIOS','APOSTOLAKIS','MINOR'),
 ('19','4723','PANOREA','VAKALIDI','ADULT'),
 ('20','5709','IAKOBOS','ANAGNOSTOS','ADULT');
+ 
+ 
+ 
+ 
+ /* INSERTIONS IN DESTINATION */
+ 
+ INSERT INTO destination VALUES
+('Anastasis Lumperopoulos','lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada','LOCAL','ENGLISH','1'),
+('Areti Kanellopoulou','elit proin interdum mauris non ligula pellentesque ultrices','ABROAD','GERMAN','2'),
+('CHRISTOS PAPAGEORGIOU','diam erat fermentum justo nec condimentum neque sapien placerat','ABROAD','PORTUGEUSE','3'),
+('NIKOS MPOUTSIOLIS','ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu','ABROAD','FRENCH','4'),
+('ALEXIS GIAKOUMAKIS','at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin','ABROAD','SPANISH','5'),
+('MARIOS MIXOPOULOS','nulla mollis molestie lorem quisque ut erat curabitur gravida','LOCAL','CHINESE','6'),
+('GIORGOS KOSTOPOULOS','tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque','LOCAL','JAPANESE','7'),
+('MPAMPIS KAGIAS','mi nulla ac enim in tempor turpis nec','LOCAL','RUSSIAN','8'),
+('ALEXANDROS PAPADOPOULOS','in quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum sit amet','ABROAD','GREEK','9'),
+('NIKOLETA MOUTESIDI','ultrices vel augue vestibulum ante ipsum primis in faucibus orci','LOCAL','BRAZILIAN','10'),
+('DIMITRA KAKOURI','rutrum nulla tellus in sagittis dui vel nisl duis ac nibh fusce','ABROAD','POLISH','11'),
+('MARIA THEODOSIOU','nulla quisque arcu libero rutrum ac lobortis vel dapibus at','LOCAL','ARMENIAN','12'),
+('PINELOPI GKOLFI','in hac habitasse platea dictumst maecenas ut massa quis','ABROAD','ALBANIAN','13'),
+('BASILIS SKAFIDAS','orci luctus et ultrices posuere cubilia curae donec pharetra','LOCAL','TURKISH','14'),
+('PANAGIOTIS NIKITAS','cras mi pede malesuada in imperdiet et commodo vulputate','ABROAD','DUTCH','15'),
+('EIRINI KRETSI','consequat morbi a ipsum integer a nibh in quis justo','ABROAD','NORWEGIAN','16'),
+('VASO SAKELLARIOU','sed ante vivamus tortor duis mattis egestas metus','ABROAD','SWEDISH','17'),
+('DANAI MPESOU','eget vulputate ut ultrices vel augue vestibulum ante ipsum primis in','ABROAD','ITALIAN','18'),
+('AGGELIKI MARH','consequat morbi a ipsum integer a nibh in quis justo maecenas','ABROAD','ROMANIAN','19'),
+('MAKIS SOTIROPOULOS','feugiat et eros vestibulum ac est lacinia nisi venenatis','LOCAL','BULGARIAN','20');
+
+ 
+ 
