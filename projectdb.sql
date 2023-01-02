@@ -153,6 +153,28 @@ CONSTRAINT TRAVELTODESTINATION
 FOREIGN KEY(to_dst_id) REFERENCES destination(dst_id)
 ON DELETE CASCADE ON UPDATE CASCADE);
 
+/* 3.1.2.1 IT supervisor TABLE */
+
+DROP TABLE IF EXISTS it_supervisor;
+CREATE TABLE it_supervisor
+(IT_AT CHAR(10) NOT NULL,
+ IT_password CHAR(10) DEFAULT 'password' NOT NULL,
+ IT_start_date DATE NOT NULL,
+ IT_end_date DATE,
+ PRIMARY KEY(IT_AT),
+ CONSTRAINT ITWORKING
+ FOREIGN KEY(IT_AT) REFERENCES worker(worker_AT)
+ ON DELETE CASCADE ON UPDATE CASCADE);
+
+/* 3.1.2.2 IT log table */
+
+DROP TABLE IF EXISTS log;
+CREATE TABLE log
+(log_datetime DATETIME NOT NULL,
+ log_action ENUM('INSERT','UPDATE','DELETE') NOT NULL,
+ log_table ENUM('trip','reservation','event','travel_to','destination'),
+ log_userid VARCHAR(10) NOT NULL,
+ PRIMARY KEY(log_datetime,log_userid));
 
 /* INSERTIONS INTO THE REQUESTED TABLES */
 
@@ -215,7 +237,7 @@ INSERT INTO worker VALUES
 ("AN272428","HLIANNA","GEWRGAKOPOYLOY",800,1), /* driver */
 ("AI212134","IWANNIS","ANASTASIOU",1500,1), /* admin */
 ("AH987765","PANAGIWTHS","TSAROUXIS",1100,1), /* guide */
-
+("AN108809","VALADIS","LIAKOPOYLOS",1300.50,1) /* IT */
 /* WORKERS OF BRANCH 2 */
 
 ("AI584736","VASILIKI","MAXA",1500,2), /*ADMIN*/
@@ -237,6 +259,7 @@ INSERT INTO worker VALUES
 ("ΑΔ120099","PARASKEYH","LINARDOY",835.60,4),       /*DRIVER*/
 ("AN272481","PERIKLIS","PAPADOPOYLOS",1120.80,4),   /*GUIDE*/
 ("AI991111","VASILEIOS","DHMHTROPOYLOS",1832.42,4), /*ADMIN*/
+("AH321100","XRYSANTHOS","VASILEIOU",1900.33,4),
 
 /* WORKERS OF BRANCH 5 */
 
@@ -251,6 +274,7 @@ INSERT INTO worker VALUES
 ("AI543473","AGGELIKH","VASILEIADOY",1140.87,6), /*GUIDE*/
 ("AM456097","XRISTINA","KATRITZOGLOY",830,6),/*DRIVER*/
 ("Π314121","XRHSTOS","PERROS",1670,6),/*ADMIN*/
+("AM113499","IOYLIA","PALAIOLOGOY",1765.56,6),
 
 /* WORKERS OF BRANCH 7 */ 
 
@@ -265,6 +289,7 @@ INSERT INTO worker VALUES
 ("AM657533","DHMHTRA","MWRAITH",910.65,8), /*DRIVER*/
 ("AN989766","NIKOLAOS","KANELLOPOYLOS",1900.34,8),/*ADMIN*/
 ("AT990233","KATERINA","PAPAIWANNOY",997.33,8), /*GUIDE*/
+("AX331685","GEWRGIOS","DIAZIKHS",1102.50,8),
 
 /*WORKERS OF BRANCH 9 */
 
@@ -272,6 +297,7 @@ INSERT INTO worker VALUES
 ("AT673566","DHMHTRIOS","KALOGHROY",837.23,9),    /*DRIVER*/
 ("P939302","IWANNA","KYVELLH",1120,9),            /*GUIDE*/
 ("AN271815","MARIOS","KIOYTOYTSKAS",1024.47,9),   /*DRIVER*/
+("AI201332","HLIAS","XRISTODOYLOS",1450,9),
 
 /* WORKERS OF BRANCH 10 */
  
@@ -286,6 +312,7 @@ INSERT INTO worker VALUES
 ("I912133","ANASTASIOS","LIOKAS",891.22,11),  /*DRIVER*/
 ("X721843","AGAPH","FOYNTAKH",1930.34,11), /*ADMIN*/
 ("AY734190","VASILEIOS","NIKAS",1000.30,11), /*GUIDE*/
+("P084934","IWANNIS","KWNSTANTINIDHS",1430.39,11),
 
 /* WORKERS OF BRANCH 12 */
 
@@ -303,14 +330,13 @@ INSERT INTO worker VALUES
 
 /* WORKERS OF BRANCH 14 */
 
-
 ("AO384322","SWTHRIOS","GEWRGAKOPOYLOS",1900,14),  /*ADMIN*/
 ("AX381223","GEWRGIOS","NIKOLETSEAS",830.34,14),   /*DRIVER*/
 ("AI095543","MARIA","SWTHROPOYLOY",843.11,14),     /*DRIVER*/
 ("AH383899","ELENH","STAYRIDOY",954.87,14),        /*GUIDE*/
+("AY379943","GEWRGIOS","ADAMOPOULOS",1800,14),
 
 /* WORKERS OF BRANCH 15 */
-
 
 ("AI290344","KWSTANTINOS","DHMHTROPOYLOS",1600.45,15), /*ADMIN*/
 ("AM949312","AGGELIKH-MARIA","DENDRINOY",1020.55,15), /*GUIDE*/
@@ -356,10 +382,10 @@ INSERT INTO worker VALUES
 
 INSERT INTO admin VALUES
 ("AI212134",'ADMINISTRATIVE',"MASTER ECONOMICS ANS LOGISTICS"), #1
-("AI584736",'LOGISTICS',"PHD LOGISTICS"), #2
+("AI584736",'ADMINISTRATIVE',"PHD LOGISTICS"), #2
 ("AB121314",'ADMINISTRATIVE',"PHD ASOEE ECONOMICS"), #3
 ("AI991111",'ACCOUNTING',"DEGREE IN ECONOMICS AND LOGISTICS UOP"), #4
-("AO125677",'ACCOUNTING',"DEGREE IN LOGISTICS AUTH"), #5
+("AO125677",'ADMINISTRATIVE',"DEGREE IN LOGISTICS AUTH"), #5
 ("Π314121",'ACCOUNTING',"DEGREE IN BUSINESS ADMINISTRATION"), #6
 ("AH654535",'ADMINISTRATIVE',"DEGREE IN INFORMATICS AND PHD IN DIGITAL ECONOMY"), #7
 ("AN989766",'LOGISTICS',"DEGREE IN LOGISTICS UOP"), #8
@@ -369,12 +395,12 @@ INSERT INTO admin VALUES
 ("AO125334",'ADMINISTRATIVE',"PHD IN LOGISTICS ASOEE"), #12
 ("AP289910",'ADMINISTRATIVE',"DEGREE IN ECONOMICS AND BUSINESS ADMINISTRATION"), #13
 ("AO384322",'LOGISTICS',"DEGREE IN LOGISTICS UOP"), #14
-("AI290344",'LOGISTICS',"DEGREE IN ECONOMICS AND LOGISTICS"), #15
+("AI290344",'ADMINISTRATIVE',"DEGREE IN ECONOMICS AND LOGISTICS"), #15
 ("AY480223",'ADMINISTRATIVE',"PHD IN ECONOMICS"), #16
-("AB493300",'ACCOUNTING',"PHD IN ECONOMICS UOP"), #17
-("AM996506",'ACCOUNTING',"DEGREE IN LOGISTICS"), #18
+("AB493300",'ADMINISTRATIVE',"PHD IN ECONOMICS UOP"), #17
+("AM996506",'ADMINISTRATIVE',"DEGREE IN LOGISTICS"), #18
 ("AI568848",'ADMINISTRATIVE',"PHD IN ECONOMICS AND LOGISTICS"), #19
-("AM347762",'LOGISTICS',"PHD IN LOGISTICS UOC"); #20
+("AM347762",'ADMINISTRATIVE',"PHD IN LOGISTICS UOC"); #20
 
 /* INSERTIONS IN MANAGES */
 
@@ -583,7 +609,7 @@ INSERT INTO reservation VALUES
 (11,5,'FANIS','PAPASTERGIANOPOYLOS','ADULT'),
 (12,25,'FOTIS','PALOYKHS','MINOR'),
 (13,7,'EIRHNH','AYGERH','MINOR'),
-(14,48,'KONSTANTINA','KONSTANTINIDI','ADULT'),
+(14,48,'KONSTANTINA','KONSTANTINIDIS','ADULT'),
 (15,25,'APOSTOLOS','VELLIDIS','ADULT'),
 (16,5,'GIORGOS','VERMIDIS','MINOR'),
 (17,40,'SPYROS','VAVOULIS','ADULT'),
@@ -653,5 +679,324 @@ INSERT INTO reservation VALUES
 (19,18,'2022-11-13 14:00:00','2022-11-15 9:00:00'),
 (20,23,'2022-10-12 10:10:00','2022-10-20 8:13:00');
  
- 
- 
+ /* ------ END OF INSERTS ---------*/
+
+
+DROP PROCEDURE IF EXISTS userlogin;
+DELIMITER $
+CREATE PROCEDURE userlogin(IN username VARCHAR(10), IN password VARCHAR(10))
+BEGIN
+   DECLARE usercheck VARCHAR(10);
+   DECLARE passwordcheck VARCHAR(10);
+   DECLARE workingcheck DATE;
+   SELECT IT_AT,IT_password,IT_end_date INTO usercheck,passwordcheck,workingcheck 
+   FROM it_supervisor WHERE IT_AT=username AND IT_password=password;
+   IF (usercheck IS NULL AND @travelagency_user IS NULL) THEN
+      SELECT IT_AT INTO usercheck FROM it_supervisor where IT_AT=username;
+      IF(usercheck IS NOT NULL) THEN
+         SELECT 'The password is wrong. Try again.';
+      ELSE
+         SELECT 'User not found';
+      END IF;
+   ELSEIF(@travelagency_user IS NOT NULL) THEN
+      SELECT 'Another user is logged in. You have to logout first to re-log in.';
+   ELSE   
+      SELECT 'Login successful. Logged as:',usercheck AS username;
+      SET @travelagency_user = usercheck;
+   END IF;
+END$
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS userlogout;
+DELIMITER $
+CREATE PROCEDURE userlogout()
+BEGIN
+   IF(@travelagency_user IS NOT NULL) THEN
+      SELECT "You logged out.";
+      SET @travelagency_user=NULL;
+   ELSE
+      SELECT "There is no supervisor logged in the database.";
+   END IF;
+END$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS showuser;
+DELIMITER $
+CREATE PROCEDURE showuser()
+BEGIN
+   DECLARE truser VARCHAR(10);
+   SET truser=@travelagency_user;
+   IF(truser IS NULL) THEN
+      SELECT "An IT supervisor is not logged in the database.";
+   ELSE
+      SELECT 'Current IT supervisor logged in:', truser AS Supervisor_AT;
+   END IF;
+END $
+DELIMITER ;
+
+
+/* TRIGGERS FOR TRIP TABLE */
+
+DROP TRIGGER IF EXISTS log_tripinsert;
+DELIMITER $
+CREATE TRIGGER log_tripinsert
+BEFORE INSERT ON trip
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'INSERT','trip',@travelagency_user);
+END $
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS log_tripdelete;
+DELIMITER $
+CREATE TRIGGER log_tripdelete
+BEFORE DELETE ON trip
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+   END IF;
+SET @getdatetime=NOW();
+INSERT INTO log VALUES(@getdatetime,'DELETE','trip',@travelagency_user);
+END $
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS log_tripupdate;
+DELIMITER $
+CREATE TRIGGER log_tripupdate
+BEFORE UPDATE ON trip
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+   END IF;
+SET @getdatetime=NOW();
+INSERT INTO log VALUES(@getdatetime,'UPDATE','trip',@travelagency_user);
+END $
+DELIMITER ;
+
+/* TRIGGERS FOR RESERVATION TABLE */
+
+DROP TRIGGER IF EXISTS log_reservationinsert;
+DELIMITER $
+CREATE TRIGGER log_reservationinsert
+BEFORE INSERT ON reservation
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'INSERT','reservation',@travelagency_user);
+END $
+DELIMITER ; 
+
+DROP TRIGGER IF EXISTS log_reservationdelete;
+DELIMITER $
+CREATE TRIGGER log_reservationdelete
+BEFORE DELETE ON reservation
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'DELETE','reservation',@travelagency_user);
+END $
+DELIMITER ; 
+
+DROP TRIGGER IF EXISTS log_reservationupdate;
+DELIMITER $
+CREATE TRIGGER log_reservationupdate
+BEFORE UPDATE ON reservation
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'UPDATE','reservation',@travelagency_user);
+END $
+DELIMITER ; 
+
+/* TRIGGERS IN EVENT TABLE */
+
+DROP TRIGGER IF EXISTS log_eventinsert;
+DELIMITER $
+CREATE TRIGGER log_eventinsert
+BEFORE INSERT ON event
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'INSERT','event',@travelagency_user);
+END $
+DELIMITER ; 
+
+DROP TRIGGER IF EXISTS log_eventdelete;
+DELIMITER $
+CREATE TRIGGER log_eventdelete
+BEFORE DELETE ON event
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'DELETE','event',@travelagency_user);
+END $
+DELIMITER ; 
+
+DROP TRIGGER IF EXISTS log_eventupdate;
+DELIMITER $
+CREATE TRIGGER log_eventupdate
+BEFORE UPDATE ON event
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'UPDATE','event',@travelagency_user);
+END $
+DELIMITER ; 
+
+/* TRIGGERS IN TRAVEL_TO TABLE */
+DROP TRIGGER IF EXISTS log_traveltoinsert;
+DELIMITER $
+CREATE TRIGGER log_traveltoinsert
+BEFORE INSERT ON travel_to
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'INSERT','travel_to',@travelagency_user);
+END $
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS log_traveltodelete;
+DELIMITER $
+CREATE TRIGGER log_traveltodelete
+BEFORE DELETE ON travel_to
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+   END IF;
+SET @getdatetime=NOW();
+INSERT INTO log VALUES(@getdatetime,'DELETE','travel_to',@travelagency_user);
+END $
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS log_traveltoupdate;
+DELIMITER $
+CREATE TRIGGER log_traveltoupdate
+BEFORE UPDATE ON travel_to
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+   END IF;
+SET @getdatetime=NOW();
+INSERT INTO log VALUES(@getdatetime,'UPDATE','travel_to',@travelagency_user);
+END $
+DELIMITER ;
+
+/* TRIGGERS IN DESTINATION */
+DROP TRIGGER IF EXISTS log_destinationinsert;
+DELIMITER $
+CREATE TRIGGER log_destinationinsert
+BEFORE INSERT ON destination
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+   END IF;
+   SET @getdatetime=NOW();
+   INSERT INTO log VALUES(@getdatetime,'INSERT','destination',@travelagency_user);
+END $
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS log_destinationdelete;
+DELIMITER $
+CREATE TRIGGER log_destinationdelete
+BEFORE DELETE ON destination
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+   END IF;
+SET @getdatetime=NOW();
+INSERT INTO log VALUES(@getdatetime,'DELETE','destination',@travelagency_user);
+END $
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS log_destinationupdate;
+DELIMITER $
+CREATE TRIGGER log_destinationupdate
+BEFORE UPDATE ON destination
+FOR EACH ROW
+BEGIN
+   DECLARE userid VARCHAR(10);
+   SET userid=@travelagency_user;
+   IF(userid IS NULL) THEN
+      SIGNAL SQLSTATE VALUE '50000'
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+   END IF;
+SET @getdatetime=NOW();
+INSERT INTO log VALUES(@getdatetime,'UPDATE','destination',@travelagency_user);
+END $
+DELIMITER ;
+
+
