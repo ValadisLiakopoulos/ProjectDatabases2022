@@ -797,7 +797,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do updates.';
    END IF;
 SET @getdatetime=NOW();
 INSERT INTO log VALUES(@getdatetime,'UPDATE','trip',@travelagency_user);
@@ -833,7 +833,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
    END IF;
    SET @getdatetime=NOW();
    INSERT INTO log VALUES(@getdatetime,'DELETE','reservation',@travelagency_user);
@@ -850,7 +850,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do updates.';
    END IF;
    SET @getdatetime=NOW();
    INSERT INTO log VALUES(@getdatetime,'UPDATE','reservation',@travelagency_user);
@@ -886,7 +886,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
    END IF;
    SET @getdatetime=NOW();
    INSERT INTO log VALUES(@getdatetime,'DELETE','event',@travelagency_user);
@@ -903,7 +903,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do insertions.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do updates.';
    END IF;
    SET @getdatetime=NOW();
    INSERT INTO log VALUES(@getdatetime,'UPDATE','event',@travelagency_user);
@@ -955,7 +955,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do updates.';
    END IF;
 SET @getdatetime=NOW();
 INSERT INTO log VALUES(@getdatetime,'UPDATE','travel_to',@travelagency_user);
@@ -1007,7 +1007,7 @@ BEGIN
    SET userid=@travelagency_user;
    IF(userid IS NULL) THEN
       SIGNAL SQLSTATE VALUE '50000'
-      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do deletes.';
+      SET MESSAGE_TEXT = 'You have to login as IT supervisor to do updates.';
    END IF;
 SET @getdatetime=NOW();
 INSERT INTO log VALUES(@getdatetime,'UPDATE','destination',@travelagency_user);
