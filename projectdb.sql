@@ -176,10 +176,34 @@ CREATE TABLE log
  log_userid VARCHAR(10) NOT NULL,
  PRIMARY KEY(log_datetime,log_userid));
 
+/* OFFERS TABLES */
+DROP TABLE IF EXISTS offers;
+CREATE TABLE offers
+(offer_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+ offer_start DATE NOT NULL,
+ offer_end DATE NOT NULL,
+ offer_cost FLOAT(7,2) NOT NULL,
+ offer_dst INT(11) UNSIGNED NOT NULL,
+ PRIMARY KEY(offer_id),
+ CONSTRAINT DESTINATIONOFFER
+ FOREIGN KEY(offer_dst) REFERENCES destination(dst_id));
+
+DROP TABLE IF EXISTS reservation_offers;
+CREATE TABLE reservation_offers
+(res_off_id INT(10) UNSIGNED NOT NULL,
+ res_off_lname VARCHAR(50),
+ res_off_name VARCHAR(50),
+ res_off_off_id INT(10)UNSIGNED NOT NULL,
+ res_off_payminadv INT(10) NOT NULL,
+ PRIMARY KEY(res_off_id),
+ CONSTRAINT reservationtooffer
+ FOREIGN KEY(res_off_off_id) REFERENCES offers(offer_id));
+
+
+
 /* INSERTIONS INTO THE REQUESTED TABLES */
 
 /* BRANCH INSERTIONS */
-
 
 INSERT INTO branch(branch_street,branch_num,branch_city) VALUES
 ("KWSTH PALAMA",30,"AGIOI THEODOROI"), #1
@@ -538,7 +562,6 @@ INSERT INTO languages VALUES
 ("AO105629","GREEK,ENGLISH"), #19
 ("AT209934","GREEK,GERMAN"); #20 
 
-
 /* INSERTIONS IN TRIP */
 
 INSERT INTO trip(tr_departure,tr_return,tr_maxseats,tr_cost,tr_br_code,tr_gui_AT,tr_drv_AT) VALUES
@@ -562,8 +585,6 @@ INSERT INTO trip(tr_departure,tr_return,tr_maxseats,tr_cost,tr_br_code,tr_gui_AT
 ('2022-6-8 7:30:00','2022-6-8 01:30:00','89','2045.09','18','AT348890','AY465904'), #local #18
 ('2022-11-13 09:00:00','2022-11-15 12:30:00','101','2651.68','19','AO105629','AY884833'), #local #19
 ('2022-10-12 06:45:00','2022-10-20 11:35:00','112','2314.27','20','AT209934','AI774301'); #abroad #20
-
-
 
 /* INSERTIONS IN EVENT */
 
@@ -589,11 +610,7 @@ INSERT INTO event VALUES
 (19,'2022-11-14 09:25:00','2022-11-14 13:10:00','Visiting shipreck beach.'),
 (20,'2022-10-16 08:45:00','2022-10-16 12:15:00','Visiting Römerberg.');
 
-
-
-
 /* INSERTIONS IN RESERVATION */
-
 
 INSERT INTO reservation VALUES
 (1,5,'KOSTAS','PAPAFILIPPOY','MINOR'),
@@ -616,10 +633,7 @@ INSERT INTO reservation VALUES
 (18,16,'SPILIOS','APOSTOLAKIS','MINOR'),
 (19,23,'PANOREA','VAKALIDI','ADULT'),
 (20,9,'IAKOBOS','ANAGNOSTOS','ADULT');
- 
- 
- 
- 
+  
  /* INSERTIONS IN DESTINATION */
  
  INSERT INTO destination(dst_name,dst_descr,dst_rtype,dst_language,dst_location) VALUES
@@ -681,7 +695,6 @@ INSERT INTO reservation VALUES
  
  /* ------ END OF INSERTS ---------*/
 
-
 DROP PROCEDURE IF EXISTS userlogin;
 DELIMITER $
 CREATE PROCEDURE userlogin(IN username VARCHAR(10), IN password VARCHAR(10))
@@ -691,7 +704,9 @@ BEGIN
    DECLARE workingcheck DATE;
    SELECT IT_AT,IT_password,IT_end_date INTO usercheck,passwordcheck,workingcheck 
    FROM it_supervisor WHERE IT_AT=username AND IT_password=password;
-   IF (usercheck IS NULL AND @travelagency_user IS NULL) THEN
+   IF(workingcheck IS NOT NULL) THEN
+      SELECT "This IT supervisor isn't working in this trave agency anymore. Login unsuccessful.";
+   ELSEIF(usercheck IS NULL AND @travelagency_user IS NULL) THEN
       SELECT IT_AT INTO usercheck FROM it_supervisor where IT_AT=username;
       IF(usercheck IS NOT NULL) THEN
          SELECT 'The password is wrong. Try again.';
@@ -730,11 +745,11 @@ BEGIN
    IF(truser IS NULL) THEN
       SELECT "An IT supervisor is not logged in the database.";
    ELSE
-      SELECT 'Current IT supervisor logged in:', truser AS Supervisor_AT;
+      SELECT 'Current IT supervisor logged in:',worker_AT AS Username,worker_name AS First_Name,worker_lname AS Last_Name
+      FROM worker WHERE worker_AT=truser;
    END IF;
 END $
 DELIMITER ;
-
 
 /* TRIGGERS FOR TRIP TABLE */
 
@@ -998,5 +1013,41 @@ SET @getdatetime=NOW();
 INSERT INTO log VALUES(@getdatetime,'UPDATE','destination',@travelagency_user);
 END $
 DELIMITER ;
+
+/* 3.1.4.3 TRIGGER THAT STOPS UPDATING TRIPS WITH RESERVATIONS */
+
+DROP TRIGGER IF EXISTS datetimecosthold;
+DELIMITER $
+CREATE TRIGGER datetimecosthold
+BEFORE UPDATE ON trip
+FOR EACH ROW
+BEGIN
+   DECLARE reservecount INT;
+   IF(NEW.tr_return<>OLD.tr_return OR NEW.tr_departure<>OLD.tr_departure OR NEW.tr_cost<>OLD.tr_cost) THEN
+      SELECT count(*) INTO reservecount FROM reservation
+      WHERE res_tr_id=NEW.tr_id;
+      IF (reservecount>0) THEN
+         SIGNAL SQLSTATE VALUE '45000'
+         SET MESSAGE_TEXT = "You can't update departure and return dates or trip costs with reservations on the trip";
+      END IF;
+   END IF;
+END $
+DELIMITER ;
+
+/* 3.1.4.4 TRIGGER THAT PREVENTS SALARY DECREASE */
+
+DROP TRIGGER IF EXISTS salarydecreaseprevention;
+DELIMITER $
+CREATE TRIGGER salarydecreaseprevention
+BEFORE UPDATE ON worker
+FOR EACH ROW
+BEGIN
+   IF(NEW.worker_salary<OLD.worker_salary) THEN
+      SIGNAL SQLSTATE VALUE '45000'
+      SET MESSAGE_TEXT = "You can't decrease salaries of workers.";
+   END IF;
+END $
+DELIMITER ;
+
 
 
