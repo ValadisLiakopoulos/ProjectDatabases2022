@@ -191,8 +191,8 @@ CREATE TABLE offers
 DROP TABLE IF EXISTS reservation_offers;
 CREATE TABLE reservation_offers
 (res_off_id INT(10) UNSIGNED NOT NULL,
- res_off_lname VARCHAR(50),
  res_off_name VARCHAR(50),
+ res_off_lname VARCHAR(50),
  res_off_off_id INT(10)UNSIGNED NOT NULL,
  res_off_payminadv INT(10) NOT NULL,
  PRIMARY KEY(res_off_id),
@@ -757,6 +757,9 @@ INSERT INTO offers(offer_start,offer_end,offer_cost,offer_dst) VALUES
 ("2023-02-11","2023-02-25",2500,13),
 ("2023-03-05","2023-03-05",1300,19);
 
+INSERT INTO it_supervisor VALUES
+("1088096","12345","2023-01-01",NULL);
+
 
  /* ------ END OF INSERTS ---------*/
 
@@ -1174,8 +1177,8 @@ END$
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS newdriver;
 DELIMITER $
-
 CREATE PROCEDURE newdriver(IN AT CHAR(10), IN firstname VARCHAR(20), IN lastname VARCHAR(20), IN salary FLOAT(7,2), IN license ENUM('A','B','C','D'),IN route ENUM("LOCAL","ABROAD"), IN experience TINYINT(4))
 BEGIN
 
@@ -1195,6 +1198,55 @@ VALUES(AT,license,route,experience);
 
 END$
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS admindelete;
+DELIMITER $
+CREATE PROCEDURE admindelete(IN adminname VARCHAR(20),IN adminlname VARCHAR(20))
+BEGIN
+   DECLARE adminAT VARCHAR(10);
+   DECLARE adminTYPE ENUM('LOGISTICS','ADMINISTRATIVE','ACCOUNTING');
+   DECLARE adminFinishedFlag INT;
+   DECLARE adminCursor CURSOR FOR
+      SELECT admin_AT,admin_type FROM worker 
+      INNER JOIN admin ON worker_AT=admin_AT 
+      WHERE worker_name=adminname AND worker_lname=adminlname;
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET adminFinishedFlag=1;
+   SET adminFinishedFlag=0;
+   OPEN adminCursor;
+   REPEAT
+      FETCH adminCursor INTO adminAT,adminTYPE;
+      IF(adminTYPE='ADMINISTRATIVE') THEN
+         SELECT 'Cannot delete administrative admins';
+      ELSE
+         SELECT 'Deleting the admin',adminname,adminlname,adminAT;
+         DELETE FROM admin WHERE admin_AT=adminAT;
+      END IF;
+   UNTIL(adminFinishedFlag=0)
+   END REPEAT;
+   CLOSE adminCursor;
+   END $
+   DELIMITER ;
+
+
+   DROP PROCEDURE IF EXISTS reservationfinder;
+   DELIMITER $
+   CREATE PROCEDURE reservationfinder(IN lowvalue INT,IN highvalue INT)
+      BEGIN
+      SELECT res_off_lname,res_off_name FROM reservation_offers 
+      WHERE res_off_payminadv BETWEEN lowvalue AND highvalue;
+      END $
+   DELIMITER ;
+
+   CREATE INDEX reservationoff_index
+   ON reservation_offers(res_off_payminadv);
+
+
+
+
+
+
+
+
 
 
 
